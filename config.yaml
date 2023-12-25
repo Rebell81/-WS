@@ -1,0 +1,9 @@
+#rutracker api key
+api: your_key
+#qbit data
+host: 10.0.0.10
+port: 8080
+#http  или https?
+ssl: false
+login: qbit_login
+password: qbit_password
