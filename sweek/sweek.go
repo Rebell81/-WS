@@ -37,7 +37,7 @@ func Process(ctx context.Context, config *config.Config) (int, error) {
 	counter := 0
 
 	for _, v := range torrents {
-		hashes = append(hashes, v.Hash)
+		hashes = append(hashes, v.InfohashV1)
 		if counter == 99 {
 			hashStrings = append(hashStrings, strings.Join(hashes, ","))
 			hashes = make([]string, 0)
@@ -64,7 +64,7 @@ func Process(ctx context.Context, config *config.Config) (int, error) {
 		}
 
 		com := strings.Replace(props.Comment, ".org", ".net", 1)
-		fmt.Println(fmt.Sprintf("%s|%s", hash, com))
+		fmt.Println(fmt.Sprintf("%s|%s|%s", props.Name, hash, com))
 	}
 
 	return 0, nil
