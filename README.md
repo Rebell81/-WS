@@ -1,2 +1,2 @@
-# -WS
+# CWS
 СWS - corpse whore searcher
