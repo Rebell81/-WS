@@ -20,6 +20,7 @@ func Process(ctx context.Context, config *config.Config) (int, error) {
 	if err != nil {
 		log.Println(fmt.Errorf("failed to init telegram bot: %w", err))
 	} else {
+		log.Println("telegram bot inited")
 		botInited = true
 	}
 
