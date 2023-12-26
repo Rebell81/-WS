@@ -39,7 +39,7 @@ func Process(ctx context.Context, config *config.Config) (int, error) {
 				log.Println(err.Error())
 			}
 
-			time.Sleep(time.Duration(config.DurationSeconds))
+			time.Sleep(time.Duration(config.DurationSeconds) * time.Second)
 		} else {
 			time.Sleep(3600 * time.Second)
 		}

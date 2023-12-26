@@ -10,6 +10,6 @@ type Config struct {
 	TelegramToken     string `config:"telegram_token,required" json:"telegram_token"`
 	ChatId            int64  `config:"telegram_chat_id,required" json:"telegram_chat_id"`
 	DurationSeconds   int    `config:"duration_seconds" json:"duration_seconds"`
-	ManualCheckOnly   bool   `config:"manual_check" json:"manual_check"`
+	ManualCheckOnly   bool   `config:"only_manual_check" json:"only_manual_check"`
 	RutrackerHost     string `config:"rutracker_host" json:"rutracker_host"`
 }
