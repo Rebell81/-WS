@@ -14,7 +14,7 @@ import (
 func doCheck(ctx context.Context, config *config.Config) error {
 	err, torrents := qBit.GetTorrents(ctx, qBittorrentClient)
 
-	log.Println(fmt.Sprintf("found %d hashes on client...", len(torrents)))
+	//log.Println(fmt.Sprintf("found %d hashes on client...", len(torrents)))
 
 	hashStrings := qBit.GetHashStrings(torrents)
 	result, err := rutracker_api.GetIdByHashes(hashStrings, config)
