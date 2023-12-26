@@ -2,8 +2,9 @@ package telegram
 
 import (
 	"fmt"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 func InitBot(token string) (*tgbotapi.BotAPI, error) {
@@ -13,7 +14,7 @@ func InitBot(token string) (*tgbotapi.BotAPI, error) {
 		return nil, err
 	}
 
-	log.Printf("Authorized on account %s", bot.Self.UserName)
+	log.Printf("telegram bot authorized as '%s'", bot.Self.UserName)
 
 	return bot, nil
 }

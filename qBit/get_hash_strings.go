@@ -6,7 +6,7 @@ import (
 	"github.com/autobrr/go-qbittorrent"
 )
 
-func GetHashesStrings(torrents []qbittorrent.Torrent) []string {
+func GetHashStrings(torrents []qbittorrent.Torrent) []string {
 	hashes := make([]string, 0)
 	hashStrings := make([]string, 0)
 	counter := 0

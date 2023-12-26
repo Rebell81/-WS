@@ -4,12 +4,17 @@ import (
 	"context"
 	"cws/config"
 	"cws/sweek"
+	"fmt"
 	"log"
 	"os"
 )
 
 func main() {
-	ctx, _ := context.WithCancel(context.Background())
+	ctx, cancelFunction := context.WithCancel(context.Background())
+	defer func() {
+		fmt.Println("Main Defer: canceling context")
+		cancelFunction()
+	}()
 
 	cfg, err := config.ReadConfig(ctx)
 	if err != nil {

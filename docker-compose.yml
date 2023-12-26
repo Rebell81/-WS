@@ -1,0 +1,18 @@
+version: "2.1"
+services:
+  CWS:
+    image: ghcr.io/rebell81/cws:latest
+    container_name: CWS
+    environment:
+      - qb_host=
+      - qb_port=8080
+      - ssl=false
+      - qb_login=
+      - qb_password=
+      - rutracker_api_token=
+      - telegram_token=
+      - telegram_chat_id=
+      - manual_check=false
+      - duration_seconds=60
+    restart: always
+    network_mode: "host"
