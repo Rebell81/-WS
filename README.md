@@ -19,7 +19,7 @@ roadmap:
 
 
 Как запускать:
-1) Скачали [отсюда](https://github.com/Rebell81/CWS/releases) последний релиз
+1) Скачали [отсюда](https://github.com/Rebell81/CWS/releases) последний релиз (конкретно файл cws.exe)
 2) Положили в нужную папку
 3) Рядом с бинарем положили https://github.com/Rebell81/CWS/blob/main/config.json
 4) Отредактировали config
