@@ -2,6 +2,7 @@ package config
 
 import (
 	"context"
+	"fmt"
 	"github.com/heetch/confita"
 	"github.com/heetch/confita/backend/env"
 	"github.com/heetch/confita/backend/file"
@@ -16,6 +17,8 @@ func ReadConfig(ctx context.Context) (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println(cfg)
 
 	return &cfg, nil
 }

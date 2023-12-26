@@ -59,14 +59,17 @@ func initCLients(ctx context.Context, config *config.Config) (err error) {
 		botInited = true
 	}
 
-	go readIncome(ctx, config)
+	if botInited {
+		go readIncome(ctx, config)
+	}
 
 	var qbitCfg = qbittorrent.Config{
-		Username: config.Login,
-		Password: config.Password,
+		Username:      config.Login,
+		Password:      config.Password,
+		TLSSkipVerify: false,
 	}
 	if config.SSL {
-		qbitCfg.Host = fmt.Sprintf("https://%s:%d", config.Host, config.Port)
+		qbitCfg.Host = fmt.Sprintf("https://%s/", config.Host)
 	} else {
 		qbitCfg.Host = fmt.Sprintf("http://%s:%d", config.Host, config.Port)
 	}
@@ -104,7 +107,7 @@ func readIncome(ctx context.Context, config *config.Config) {
 						log.Println(err)
 					}
 				} else {
-					if res {
+					if !res {
 						err = telegram.SendMsg(bot, "Мертвых торентов не найдено", config.ChatId)
 						if err != nil {
 							log.Println(err)
