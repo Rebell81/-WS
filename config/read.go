@@ -2,20 +2,23 @@ package config
 
 import (
 	"context"
-	"github.com/heetch/confita"
-	"github.com/heetch/confita/backend/env"
-	"github.com/heetch/confita/backend/file"
+
+	"github.com/gookit/config/v2"
+	"github.com/gookit/config/v2/json"
 )
 
 func ReadConfig(ctx context.Context) (*Config, error) {
-	loader := confita.NewLoader(env.NewBackend(), file.NewOptionalBackend("config.yaml"))
+	config.WithOptions(config.ParseEnv)
+
+	// add driver for support yaml content
+	config.AddDriver(json.Driver)
+	err := config.LoadFiles("config.json")
+	if err != nil {
+		panic(err)
+	}
 
 	cfg := Config{}
-
-	err := loader.Load(ctx, &cfg)
-	if err != nil {
-		return nil, err
-	}
+	err = config.Decode(&cfg)
 
 	return &cfg, nil
 }

@@ -1,0 +1,10 @@
+{
+  "rutrackerApiToken": "",
+  "host": "10.0.0.10",
+  "port": 8080,
+  "ssl": false,
+  "login": "",
+  "password": "",
+  "telegramToken": "",
+  "telegramChatId": 0
+}
