@@ -1,10 +1,11 @@
 {
-  "rutrackerApiToken": "",
-  "host": "10.0.0.10",
-  "port": 8080,
+  "qb_host": "",
+  "qb_port": 8080,
   "ssl": false,
-  "login": "",
-  "password": "",
-  "telegramToken": "",
-  "telegramChatId": 0
+  "qb_login": "",
+  "qb_password": "",
+  "rutracker_api_token": "",
+  "telegram_token": "",
+  "telegram_chat_id": 0,
+  "manual_check": false
 }

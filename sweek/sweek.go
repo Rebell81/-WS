@@ -7,22 +7,59 @@ import (
 	"cws/rutracker_api"
 	"cws/telegram"
 	"fmt"
-	"log"
-	"strings"
-
 	"github.com/autobrr/go-qbittorrent"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"log"
+	"os"
+	"os/signal"
+	"strings"
+	"syscall"
+	"time"
+)
+
+var (
+	botInited   = false
+	bot         *tgbotapi.BotAPI
+	qBittorrent *qbittorrent.Client
 )
 
 func Process(ctx context.Context, config *config.Config) (int, error) {
-	bot, err := telegram.InitBot(config.Token)
-	var botInited = false
+	err := initCLients(ctx, config)
+	if err != nil {
+		return -1, err
+	}
 
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-c
+		os.Exit(0)
+	}()
+
+	for {
+		if !config.ManualCheckOnly {
+			_, err := doCheck(ctx, config)
+			if err != nil {
+				log.Println(err.Error())
+			}
+
+			time.Sleep(60 * time.Second)
+		} else {
+			time.Sleep(3600 * time.Second)
+		}
+	}
+}
+
+func initCLients(ctx context.Context, config *config.Config) (err error) {
+	bot, err = telegram.InitBot(config.TelegramToken)
 	if err != nil {
 		log.Println(fmt.Errorf("failed to init telegram bot: %w", err))
 	} else {
 		log.Println("telegram bot inited")
 		botInited = true
 	}
+
+	go readIncome(ctx, config)
 
 	var qbitCfg = qbittorrent.Config{
 		Username: config.Login,
@@ -34,37 +71,61 @@ func Process(ctx context.Context, config *config.Config) (int, error) {
 		qbitCfg.Host = fmt.Sprintf("http://%s:%d", config.Host, config.Port)
 	}
 
-	err, qbClient := qBit.InitClient(ctx, qbitCfg)
-	if err != nil {
-		log.Println(fmt.Errorf("failed to init qBittorrent client: %w", err))
+	qBittorrent = qbittorrent.NewClient(qbitCfg)
 
-		return -1, err
+	if err := qBittorrent.LoginCtx(ctx); err != nil {
+		return fmt.Errorf("failed to init qBittorrent client: %w", err)
 	}
 
 	log.Println("qBittorrent client created and login success")
-	err, torrents := qBit.GetTorrents(ctx, qbClient)
 
-	hashes := make([]string, 0)
-	hashStrings := make([]string, 0)
-	counter := 0
+	return nil
+}
 
-	for _, v := range torrents {
-		hashes = append(hashes, v.InfohashV1)
-		if counter == 99 {
-			hashStrings = append(hashStrings, strings.Join(hashes, ","))
-			hashes = make([]string, 0)
-			counter = 0
-		} else {
-			counter++
+func readIncome(ctx context.Context, config *config.Config) {
+	u := tgbotapi.NewUpdate(0)
+	u.Timeout = 60
+	updates := bot.GetUpdatesChan(u)
+
+	for update := range updates {
+		if update.Message != nil {
+
+			switch update.Message.Text {
+			case "/check":
+				err := telegram.SendMsg(bot, "Ща поищем, жди", config.ChatId)
+				if err != nil {
+					log.Println(err)
+				}
+
+				res, err := doCheck(ctx, config)
+				if err != nil {
+					err = telegram.SendMsg(bot, fmt.Sprintf("Ошибка во время ручного обновления: %s", err), config.ChatId)
+					if err != nil {
+						log.Println(err)
+					}
+				} else {
+					if res {
+						err = telegram.SendMsg(bot, "Мертвых торентов не найдено", config.ChatId)
+						if err != nil {
+							log.Println(err)
+						}
+					}
+				}
+			}
 		}
 	}
+}
+
+func doCheck(ctx context.Context, config *config.Config) (bool, error) {
+	err, torrents := qBit.GetTorrents(ctx, qBittorrent)
 
 	log.Println(fmt.Sprintf("found %d hashes on client...", len(torrents)))
 
-	result, err := rutracker_api.GetIdByHashes(hashStrings, config.Api)
+	hashStrings := qBit.GetHashesStrings(torrents)
+	result, err := rutracker_api.GetIdByHashes(hashStrings, config.RutrackerApiToken)
 	if err != nil {
 		log.Println(err)
-		return -1, err
+		return false, err
 	}
 
 	notFoundOnTrackerHashes := make([]string, 0)
@@ -75,9 +136,9 @@ func Process(ctx context.Context, config *config.Config) (int, error) {
 	}
 
 	for _, hash := range notFoundOnTrackerHashes {
-		err, props := qBit.GetProps(ctx, qbClient, hash)
+		err, props := qBit.GetProps(ctx, qBittorrent, hash)
 		if err != nil {
-			return -1, err
+			return false, err
 		}
 
 		com := strings.Replace(props.Comment, ".org", ".net", 1)
@@ -95,5 +156,5 @@ func Process(ctx context.Context, config *config.Config) (int, error) {
 		log.Println("all torrents are up to date")
 	}
 
-	return 0, nil
+	return true, nil
 }
