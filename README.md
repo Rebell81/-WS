@@ -64,4 +64,5 @@
 
 - `/check` запускает ручную проверку
 
-![img.png](img.png)
+<img width="607" alt="image" src="https://github.com/Rebell81/CWS/assets/13855710/d3c704ab-f4c9-4f58-87b7-0d30959b7e5b">
+
