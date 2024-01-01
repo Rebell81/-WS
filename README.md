@@ -1,4 +1,4 @@
-# CWS
+# CWS [![Go](https://github.com/Rebell81/CWS/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/Rebell81/CWS/actions/workflows/go.yml)
 СWS - corpse whore searcher
 
 Если вкратце, небольшой скрипт для выявления мертвых раздач с рутрекера на вашем торент клиенте
