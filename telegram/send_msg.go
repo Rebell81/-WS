@@ -6,6 +6,7 @@ import (
 
 func SendMsg(bot *tgbotapi.BotAPI, msg string, chatId int64) error {
 	tgMessage := tgbotapi.NewMessage(chatId, msg)
+	tgMessage.ParseMode = "markdown"
 
 	_, err := bot.Send(tgMessage)
 	if err != nil {

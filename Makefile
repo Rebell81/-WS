@@ -1,7 +1,7 @@
 .PHONY: build
 build:
 	#docker build -t ghcr.io/rebell81/cws:0.4 -t ghcr.io/rebell81/cws:latest --platform linux/amd64 --no-cache .
-	docker buildx build --platform linux/arm64,linux/amd64 --push --tag ghcr.io/rebell81/cws:latest --tag ghcr.io/rebell81/cws:0.5 .
+	docker buildx build --platform linux/arm64,linux/amd64 --push --tag ghcr.io/rebell81/cws:latest --tag ghcr.io/rebell81/cws:0.6 .
 #.PHONY: push
 push:
 		docker push ghcr.io/rebell81/cws --all-tags

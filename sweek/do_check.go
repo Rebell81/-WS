@@ -51,7 +51,7 @@ func validateHash(ctx context.Context, config *config.Config, result map[string]
 		if telegramBotInited {
 			err = telegram.SendMsg(
 				telegramBotClient,
-				fmt.Sprintf("Найден мертвый торент: %s```%s```%s", props.Name, hashV1, comment),
+				fmt.Sprintf("`%s` \n `%s` \n %s", props.Name, hashV1, comment),
 				config.ChatId)
 			if err != nil {
 				log.Printf(err.Error())
