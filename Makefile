@@ -7,9 +7,8 @@ login:
 	docker login ghcr.io
 .PHONY: build
 build:
-	docker buildx build --platform linux/arm64,linux/amd64 --push --tag ghcr.io/rebell81/cws:latest --tag ghcr.io/rebell81/cws:0.6 .
+	docker buildx build --platform linux/arm64,linux/amd64 --push --tag ghcr.io/sharkboy-j/cws:latest --tag ghcr.io/sharkboy-j/cws:0.7 .
 #.PHONY: push
 #push:
-#		docker push ghcr.io/rebell81/cws --all-tags
-
+#		docker push ghcr.io/sharkboy-j/cws --all-tags
 

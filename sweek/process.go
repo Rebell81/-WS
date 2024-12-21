@@ -34,7 +34,7 @@ func Process(ctx context.Context, config *config.Config) (int, error) {
 
 	for {
 		if !config.ManualCheckOnly {
-			err := doCheck(ctx, config)
+			err = doCheck(ctx, config)
 			if err != nil {
 				log.Println(err.Error())
 			}

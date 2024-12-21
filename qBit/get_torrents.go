@@ -8,7 +8,7 @@ import (
 	"github.com/autobrr/go-qbittorrent"
 )
 
-func GetTorrents(ctx context.Context, client *qbittorrent.Client) (error, []qbittorrent.Torrent) {
+func GetTorrents(ctx context.Context, client *qbittorrent.Client) ([]qbittorrent.Torrent, error) {
 	var (
 		filter = "seeding"
 		//filter   = "all"
@@ -25,8 +25,8 @@ func GetTorrents(ctx context.Context, client *qbittorrent.Client) (error, []qbit
 
 	torrents, err := client.GetTorrentsCtx(ctx, req)
 	if err != nil {
-		return fmt.Errorf("ERROR: could not get torrents %v", err), nil
+		return nil, fmt.Errorf("ERROR: could not get torrents %v", err)
 	}
 
-	return nil, torrents
+	return torrents, nil
 }
