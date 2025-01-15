@@ -1,4 +1,4 @@
-# CWS [![Go](https://github.com/Rebell81/CWS/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/Rebell81/CWS/actions/workflows/go.yml)
+# CWS [![Go](https://github.com/sharkboy-j/CWS/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/sharkboy-j/CWS/actions/workflows/go.yml)
 СWS - corpse whore searcher
 
 Если вкратце, небольшой скрипт для выявления мертвых раздач с рутрекера на вашем торент клиенте
@@ -21,17 +21,17 @@
 - [ ] удалить всё к херам сабачим, переписать заново
 
 # Как запускать:
-1) Скачали [отсюда](https://github.com/Rebell81/CWS/releases) последний релиз (конкретно файл cws.exe)
+1) Скачали [отсюда](https://github.com/sharkboy-j/CWS/releases) последний релиз (конкретно файл cws.exe)
 2) Положили в нужную папку
-3) Рядом с бинарем положили [config.json](https://github.com/Rebell81/CWS/blob/main/config.json)
+3) Рядом с бинарем положили [config.json](https://github.com/sharkboy-j/CWS/blob/main/config.json)
 4) Отредактировали config
 5) Открываем терминал\консоль, переходим в папку с бинарем, запускаем
-6) ![image](https://github.com/Rebell81/CWS/assets/13855710/0133bbeb-77b3-42b4-997c-638f3b96c759)
+6) ![image](https://github.com/sharkboy-j/CWS/assets/13855710/0133bbeb-77b3-42b4-997c-638f3b96c759)
 
 > [!CAUTION]
-> Как запускать через докер гуглим сами. Либо юзайте докер файл и билдите сами, либо используйте готовый пакет https://github.com/Rebell81/CWS/pkgs/container/cws
+> Как запускать через докер гуглим сами. Либо юзайте докер файл и билдите сами, либо используйте готовый пакет https://github.com/sharkboy-j/CWS/pkgs/container/cws
 
-> Список env для докера такой-же как и [config.json](https://github.com/Rebell81/CWS/blob/main/config.json) 
+> Список env для докера такой-же как и [config.json](https://github.com/sharkboy-j/CWS/blob/main/config.json) 
 
 
 # Как настроить отправку сообщений в телегу:
