@@ -15,6 +15,7 @@ import (
 )
 
 const rutrackerHostStr = "rutracker"
+const rutrackerHostStr2 = "t-ru"
 
 func doCheck(ctx context.Context, config *config.Config) error {
 	torrents, err := qBit.GetTorrents(ctx, qBittorrentClient)
@@ -24,22 +25,39 @@ func doCheck(ctx context.Context, config *config.Config) error {
 	rutrackerTorrents := make([]qbittorrent.Torrent, 0)
 
 	for _, torrent := range torrents {
-		if torrent.TrackersCount > 1 {
-			trackers, trErr := qBit.GetTrackers(ctx, qBittorrentClient, torrent.Hash)
-			if trErr != nil {
-				log.Println(trErr)
+		trackers, trErr := qBit.GetTrackers(ctx, qBittorrentClient, torrent.Hash)
+		if trErr != nil {
+			log.Println(trErr)
 
-				return trErr
-			}
-
-			if slices.ContainsFunc(trackers, isRutracker) {
-				rutrackerTorrents = append(rutrackerTorrents, torrent)
-			}
-		} else {
-			if strings.Contains(torrent.Tracker, rutrackerHostStr) {
-				rutrackerTorrents = append(rutrackerTorrents, torrent)
-			}
+			return trErr
 		}
+
+		if slices.ContainsFunc(trackers, isRutracker) {
+			rutrackerTorrents = append(rutrackerTorrents, torrent)
+		} else {
+			log.Print(fmt.Sprintf("torrent %s not found on rutracker", torrent.Name))
+		}
+
+		//if torrent.TrackersCount > 1 {
+		//	trackers, trErr := qBit.GetTrackers(ctx, qBittorrentClient, torrent.Hash)
+		//	if trErr != nil {
+		//		log.Println(trErr)
+		//
+		//		return trErr
+		//	}
+		//
+		//	if slices.ContainsFunc(trackers, isRutracker) {
+		//		rutrackerTorrents = append(rutrackerTorrents, torrent)
+		//	} else {
+		//		log.Print(fmt.Sprintf("torrent %s not found on rutracker", torrent.Name))
+		//	}
+		//} else {
+		//	if strings.Contains(torrent.Tracker, rutrackerHostStr) || strings.Contains(torrent.Tracker, rutrackerHostStr2) {
+		//		rutrackerTorrents = append(rutrackerTorrents, torrent)
+		//	} else {
+		//		log.Print(fmt.Sprintf("torrent %s not found on rutracker", torrent.Name))
+		//	}
+		//}
 	}
 
 	hashStrings := qBit.GetHashStrings(rutrackerTorrents)
@@ -59,7 +77,7 @@ func doCheck(ctx context.Context, config *config.Config) error {
 }
 
 func isRutracker(tracker qbittorrent.TorrentTracker) bool {
-	return strings.Contains(tracker.Url, rutrackerHostStr)
+	return strings.Contains(tracker.Url, rutrackerHostStr) || strings.Contains(tracker.Url, rutrackerHostStr2)
 }
 
 func validateHash(ctx context.Context, config *config.Config, result map[string]*int) error {
